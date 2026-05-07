@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37216.2 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "clini_management_system.client", "clini_management_system.client\clini_management_system.client.esproj", "{4D1E8615-8ADF-7A19-10B1-38921ACAE88A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clini_Management_System.Server", "Clini_Management_System.Server\Clini_Management_System.Server.csproj", "{501CFA3C-9545-4485-AD4F-B3A1686C510D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4D1E8615-8ADF-7A19-10B1-38921ACAE88A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D1E8615-8ADF-7A19-10B1-38921ACAE88A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D1E8615-8ADF-7A19-10B1-38921ACAE88A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{4D1E8615-8ADF-7A19-10B1-38921ACAE88A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D1E8615-8ADF-7A19-10B1-38921ACAE88A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D1E8615-8ADF-7A19-10B1-38921ACAE88A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{501CFA3C-9545-4485-AD4F-B3A1686C510D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{501CFA3C-9545-4485-AD4F-B3A1686C510D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{501CFA3C-9545-4485-AD4F-B3A1686C510D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{501CFA3C-9545-4485-AD4F-B3A1686C510D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CDA6DB7F-F6B5-45C5-88DC-DC46F75A9DF6}
+	EndGlobalSection
+EndGlobal
