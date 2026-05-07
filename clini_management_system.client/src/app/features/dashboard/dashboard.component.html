@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="card">
+    <h2>Revenue Dashboard</h2>
+    <div class="row">
+      <label>From <input type="date" [(ngModel)]="from" /></label>
+      <label>To <input type="date" [(ngModel)]="to" /></label>
+      <button (click)="load()">Refresh</button>
+    </div>
+  </div>
+
+  <div class="card metrics" *ngIf="summary">
+    <div class="metric-tile">
+      <div class="metric">{{ summary.totalRevenue | currency: 'INR' }}</div>
+      <div class="metric-label">Total Revenue</div>
+    </div>
+    <div class="metric-tile">
+      <div class="metric">{{ summary.totalAppointments }}</div>
+      <div class="metric-label">Total Appointments</div>
+    </div>
+    <div class="metric-tile">
+      <div class="metric metric-success">{{ summary.completedAppointments }}</div>
+      <div class="metric-label">Completed</div>
+    </div>
+    <div class="metric-tile">
+      <div class="metric metric-danger">{{ summary.cancelledAppointments }}</div>
+      <div class="metric-label">Cancelled</div>
+    </div>
+  </div>
+
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+</div>

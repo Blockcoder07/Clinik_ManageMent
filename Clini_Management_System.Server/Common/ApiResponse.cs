@@ -1,20 +1,22 @@
 namespace Clini_Management_System.Server.Common;
 
-public class ApiResponse<T>
+public sealed class ApiResponse<T>
 {
-    public bool Success { get; set; }
-    public string Message { get; set; } = string.Empty;
-    public T? Data { get; set; }
+    #region Properties
 
-    public ApiResponse() { }
+    public bool Success { get; init; }
+    public string Message { get; init; } = string.Empty;
+    public T? Data { get; init; }
 
-    public ApiResponse(bool success, string message, T? data)
-    {
-        Success = success;
-        Message = message;
-        Data = data;
-    }
+    #endregion
 
-    public static ApiResponse<T> Ok(T data, string message = "Success") => new(true, message, data);
-    public static ApiResponse<T> Fail(string message) => new(false, message, default);
+    #region Factory Methods
+
+    public static ApiResponse<T> Ok(T data, string message = "Success") =>
+        new() { Success = true, Message = message, Data = data };
+
+    public static ApiResponse<T> Fail(string message) =>
+        new() { Success = false, Message = message };
+
+    #endregion
 }

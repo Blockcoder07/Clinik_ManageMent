@@ -1,31 +1,31 @@
 namespace Clini_Management_System.Server.Common;
 
-public class ApiException : Exception
+public abstract class ApiException : Exception
 {
-    public int StatusCode { get; }
-
-    public ApiException(string message, int statusCode) : base(message)
+    protected ApiException(string message, int statusCode) : base(message)
     {
         StatusCode = statusCode;
     }
+
+    public int StatusCode { get; }
 }
 
-public class BadRequestException : ApiException
+public sealed class BadRequestException : ApiException
 {
-    public BadRequestException(string message) : base(message, 400) { }
+    public BadRequestException(string message) : base(message, StatusCodes.Status400BadRequest) { }
 }
 
-public class UnauthorizedException : ApiException
+public sealed class UnauthorizedException : ApiException
 {
-    public UnauthorizedException(string message) : base(message, 401) { }
+    public UnauthorizedException(string message) : base(message, StatusCodes.Status401Unauthorized) { }
 }
 
-public class NotFoundException : ApiException
+public sealed class NotFoundException : ApiException
 {
-    public NotFoundException(string message) : base(message, 404) { }
+    public NotFoundException(string message) : base(message, StatusCodes.Status404NotFound) { }
 }
 
-public class ConflictException : ApiException
+public sealed class ConflictException : ApiException
 {
-    public ConflictException(string message) : base(message, 409) { }
+    public ConflictException(string message) : base(message, StatusCodes.Status409Conflict) { }
 }

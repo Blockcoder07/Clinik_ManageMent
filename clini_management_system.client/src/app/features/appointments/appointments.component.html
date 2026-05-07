@@ -1,0 +1,65 @@
+<div class="container">
+  <div class="card">
+    <h2>Appointments</h2>
+    <div class="row">
+      <label>From <input type="date" [(ngModel)]="from" /></label>
+      <label>To <input type="date" [(ngModel)]="to" /></label>
+      <button (click)="loadAppointments()">Filter</button>
+      <span class="spacer"></span>
+      <button (click)="toggleForm()">{{ showForm ? 'Cancel' : '+ New Appointment' }}</button>
+    </div>
+  </div>
+
+  <div class="card" *ngIf="showForm">
+    <h3>New Appointment</h3>
+    <div class="row">
+      <select [(ngModel)]="newAppointment.patientId">
+        <option [ngValue]="0" disabled>-- Select Patient --</option>
+        <option *ngFor="let p of patients" [ngValue]="p.id">
+          {{ p.name }} ({{ p.mobileNumber }})
+        </option>
+      </select>
+      <input [(ngModel)]="newAppointment.doctorName" placeholder="Doctor Name" />
+      <input type="datetime-local" [(ngModel)]="newAppointment.appointmentDate" />
+      <button (click)="create()" [disabled]="busy">Create</button>
+    </div>
+    <p class="muted" *ngIf="patients.length === 0">
+      No patients yet. Add one via <code>POST /api/patients</code> first.
+    </p>
+  </div>
+
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>Patient</th>
+          <th>Doctor</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of appointments">
+          <td>{{ a.patientName }}</td>
+          <td>{{ a.doctorName }}</td>
+          <td>{{ a.appointmentDate | date: 'medium' }}</td>
+          <td>
+            <span class="status status-{{ a.status }}">{{ statusLabel(a.status) }}</span>
+          </td>
+          <td>
+            <ng-container *ngIf="isScheduled(a.status)">
+              <button class="secondary" (click)="updateStatus(a, CompletedStatus)">Complete</button>
+              <button class="secondary" (click)="updateStatus(a, CancelledStatus)">Cancel</button>
+            </ng-container>
+          </td>
+        </tr>
+        <tr *ngIf="appointments.length === 0">
+          <td colspan="5" class="muted center">No appointments in selected range.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+</div>

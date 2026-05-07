@@ -6,12 +6,15 @@ namespace Clini_Management_System.Server.Models.Entities;
 public class Appointment : TenantEntity
 {
     public int Id { get; set; }
+
     public int PatientId { get; set; }
 
-    [Required, MaxLength(150)]
+    [Required]
+    [MaxLength(150)]
     public string DoctorName { get; set; } = string.Empty;
 
     public DateTime AppointmentDate { get; set; }
+
     public AppointmentStatus Status { get; set; } = AppointmentStatus.Scheduled;
 
     [Timestamp]

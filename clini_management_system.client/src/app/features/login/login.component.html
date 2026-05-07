@@ -1,0 +1,33 @@
+<div class="auth-shell">
+  <div class="card auth-card">
+    <h2>Clinic Login</h2>
+
+    <form *ngIf="mode === 'login'" (ngSubmit)="login()" #loginForm="ngForm">
+      <input class="full" name="username" placeholder="Username"
+             [(ngModel)]="username" required />
+      <input class="full" name="password" type="password" placeholder="Password"
+             [(ngModel)]="password" required />
+      <button class="full" type="submit" [disabled]="busy">Login</button>
+      <p class="muted center">
+        New clinic?
+        <a href="javascript:void(0)" (click)="switchMode('register')">Register here</a>
+      </p>
+    </form>
+
+    <form *ngIf="mode === 'register'" (ngSubmit)="register()" #registerForm="ngForm">
+      <input class="full" name="clinicName" placeholder="Clinic Name"
+             [(ngModel)]="clinicName" required />
+      <input class="full" name="username" placeholder="Admin Username"
+             [(ngModel)]="username" required />
+      <input class="full" name="password" type="password" placeholder="Password (min 8)"
+             [(ngModel)]="password" required />
+      <button class="full" type="submit" [disabled]="busy">Register</button>
+      <p class="muted center">
+        Already have an account?
+        <a href="javascript:void(0)" (click)="switchMode('login')">Login</a>
+      </p>
+    </form>
+
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+  </div>
+</div>

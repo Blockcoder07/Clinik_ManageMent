@@ -5,23 +5,45 @@ namespace Clini_Management_System.Server.Common;
 public interface ITenantContext
 {
     int ClinicId { get; }
+    bool IsAuthenticated { get; }
 }
 
-public class TenantContext : ITenantContext
+public sealed class TenantContext : ITenantContext
 {
+    #region Constants
+
+    public const string ClinicIdClaim = "clinicId";
+
+    #endregion
+
+    #region Fields
+
     private readonly IHttpContextAccessor _httpContextAccessor;
+
+    #endregion
+
+    #region Constructor
 
     public TenantContext(IHttpContextAccessor httpContextAccessor)
     {
         _httpContextAccessor = httpContextAccessor;
     }
 
+    #endregion
+
+    #region Public Properties
+
     public int ClinicId
     {
         get
         {
-            var value = _httpContextAccessor.HttpContext?.User.FindFirstValue("clinicId");
-            return int.TryParse(value, out var id) ? id : 0;
+            var raw = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClinicIdClaim);
+            return int.TryParse(raw, out var id) ? id : 0;
         }
     }
+
+    public bool IsAuthenticated =>
+        _httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated == true;
+
+    #endregion
 }

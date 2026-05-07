@@ -3,17 +3,25 @@ using FluentValidation;
 
 namespace Clini_Management_System.Server.Validators;
 
-public class RegisterRequestValidator : AbstractValidator<RegisterRequestDto>
+public sealed class RegisterRequestValidator : AbstractValidator<RegisterRequestDto>
 {
     public RegisterRequestValidator()
     {
-        RuleFor(x => x.ClinicName).NotEmpty().MaximumLength(150);
-        RuleFor(x => x.Username).NotEmpty().MinimumLength(4).MaximumLength(100);
-        RuleFor(x => x.Password).NotEmpty().MinimumLength(8);
+        RuleFor(x => x.ClinicName)
+            .NotEmpty().WithMessage("Clinic name is required.")
+            .MaximumLength(150);
+
+        RuleFor(x => x.Username)
+            .NotEmpty().WithMessage("Username is required.")
+            .MinimumLength(4).MaximumLength(100);
+
+        RuleFor(x => x.Password)
+            .NotEmpty().WithMessage("Password is required.")
+            .MinimumLength(8).WithMessage("Password must be at least 8 characters long.");
     }
 }
 
-public class LoginRequestValidator : AbstractValidator<LoginRequestDto>
+public sealed class LoginRequestValidator : AbstractValidator<LoginRequestDto>
 {
     public LoginRequestValidator()
     {

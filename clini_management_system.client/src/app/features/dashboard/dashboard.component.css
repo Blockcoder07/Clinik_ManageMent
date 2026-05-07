@@ -1,0 +1,15 @@
+.metrics {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.metric-tile {
+  text-align: center;
+  flex: 1;
+  min-width: 160px;
+}
+
+.metric-success { color: #16a34a; }
+.metric-danger  { color: #dc2626; }

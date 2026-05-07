@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from './core/core';
+
+import { AuthService } from './core';
 
 @Component({
   selector: 'app-root',
@@ -11,11 +11,14 @@ import { AuthService } from './core/core';
       <span class="spacer"></span>
       <a href="javascript:void(0)" (click)="logout()">Logout</a>
     </nav>
+
     <router-outlet></router-outlet>
   `
 })
 export class AppComponent {
-  constructor(public readonly auth: AuthService, private readonly router: Router) {}
+  constructor(public readonly auth: AuthService) {}
 
-  logout(): void { this.auth.logout(); }
+  logout(): void {
+    this.auth.logout();
+  }
 }

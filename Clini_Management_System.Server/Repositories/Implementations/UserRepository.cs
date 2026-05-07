@@ -5,17 +5,29 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Clini_Management_System.Server.Repositories.Implementations;
 
-public class UserRepository : IUserRepository
+public sealed class UserRepository : IUserRepository
 {
+    #region Fields
+
     private readonly AppDbContext _db;
+
+    #endregion
+
+    #region Constructor
 
     public UserRepository(AppDbContext db)
     {
         _db = db;
     }
 
+    #endregion
+
+    #region Public Methods
+
     public Task<User?> GetByUsernameAsync(string username, CancellationToken ct = default) =>
-        _db.Users.IgnoreQueryFilters().FirstOrDefaultAsync(x => x.Username == username, ct);
+        _db.Users
+            .IgnoreQueryFilters()
+            .FirstOrDefaultAsync(x => x.Username == username, ct);
 
     public Task<bool> ClinicExistsAsync(string clinicName, CancellationToken ct = default) =>
         _db.Clinics.AnyAsync(x => x.Name == clinicName, ct);
@@ -33,4 +45,6 @@ public class UserRepository : IUserRepository
         await _db.SaveChangesAsync(ct);
         return user;
     }
+
+    #endregion
 }

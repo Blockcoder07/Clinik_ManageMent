@@ -5,25 +5,44 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Clini_Management_System.Server.Repositories.Implementations;
 
-public class AppointmentRepository : IAppointmentRepository
+public sealed class AppointmentRepository : IAppointmentRepository
 {
+    #region Fields
+
     private readonly AppDbContext _db;
+
+    #endregion
+
+    #region Constructor
 
     public AppointmentRepository(AppDbContext db)
     {
         _db = db;
     }
 
+    #endregion
+
+    #region Public Methods
+
     public Task<Appointment?> GetByIdAsync(int id, CancellationToken ct = default) =>
         _db.Appointments.FirstOrDefaultAsync(x => x.Id == id, ct);
 
     public Task<Appointment?> GetByIdWithPatientAsync(int id, CancellationToken ct = default) =>
-        _db.Appointments.Include(x => x.Patient).FirstOrDefaultAsync(x => x.Id == id, ct);
+        _db.Appointments
+            .Include(x => x.Patient)
+            .FirstOrDefaultAsync(x => x.Id == id, ct);
 
     public async Task<(IReadOnlyList<Appointment> Items, int TotalCount)> GetPagedAsync(
-        DateTime? from, DateTime? to, int pageNumber, int pageSize, CancellationToken ct = default)
+        DateTime? from,
+        DateTime? to,
+        int pageNumber,
+        int pageSize,
+        CancellationToken ct = default)
     {
-        var query = _db.Appointments.Include(x => x.Patient).AsQueryable();
+        var query = _db.Appointments
+            .AsNoTracking()
+            .Include(x => x.Patient)
+            .AsQueryable();
 
         if (from.HasValue) query = query.Where(x => x.AppointmentDate >= from.Value);
         if (to.HasValue) query = query.Where(x => x.AppointmentDate <= to.Value);
@@ -49,4 +68,6 @@ public class AppointmentRepository : IAppointmentRepository
         _db.Entry(appointment).Property(x => x.RowVersion).OriginalValue = originalRowVersion;
         return _db.SaveChangesAsync(ct);
     }
+
+    #endregion
 }
