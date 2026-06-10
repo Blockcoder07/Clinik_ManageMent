@@ -73,7 +73,7 @@ stages:
     - task: AzureWebApp@1
       displayName: 'Deploy to Azure App Service'
       inputs:
-        azureSubscription: 'AzureServiceConnection'
+        azureSubscription: 'ClinicManagement'
         appType: 'webApp'
         appName: 'ClinicManagement'
         package: '$(Pipeline.Workspace)/drop/**/*.zip'
