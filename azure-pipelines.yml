@@ -9,12 +9,15 @@ variables:
 
 stages:
 
+# ==========================
+# BUILD STAGE
+# ==========================
 - stage: Build
   displayName: 'Build Application'
 
   jobs:
   - job: BuildJob
-    displayName: 'Build'
+    displayName: 'Build ASP.NET Core API'
 
     steps:
 
@@ -31,14 +34,14 @@ stages:
         projects: '**/*.csproj'
 
     - task: DotNetCoreCLI@2
-      displayName: 'Build Solution'
+      displayName: 'Build Project'
       inputs:
         command: 'build'
         projects: '**/*.csproj'
         arguments: '--configuration $(BuildConfiguration)'
 
     - task: DotNetCoreCLI@2
-      displayName: 'Publish Application'
+      displayName: 'Publish Project'
       inputs:
         command: 'publish'
         publishWebProjects: true
@@ -50,28 +53,27 @@ stages:
         targetPath: '$(Build.ArtifactStagingDirectory)'
         artifact: 'drop'
 
+# ==========================
+# DEPLOY STAGE
+# ==========================
 - stage: Deploy
   displayName: 'Deploy to Azure'
   dependsOn: Build
   condition: succeeded()
 
   jobs:
-  - deployment: DeployWeb
-    displayName: 'Deploy ASP.NET Core API'
-    environment: 'Production'
+  - job: DeployWeb
+    displayName: 'Deploy to App Service'
 
-    strategy:
-      runOnce:
-        deploy:
-          steps:
+    steps:
 
-          - download: current
-            artifact: drop
+    - download: current
+      artifact: drop
 
-          - task: AzureWebApp@1
-            displayName: 'Deploy to Azure App Service'
-            inputs:
-              azureSubscription: 'AzureServiceConnection'
-              appType: 'webApp'
-              appName: 'ClinicManagement'
-              package: '$(Pipeline.Workspace)/drop/**/*.zip'
+    - task: AzureWebApp@1
+      displayName: 'Deploy to Azure App Service'
+      inputs:
+        azureSubscription: 'AzureServiceConnection'
+        appType: 'webApp'
+        appName: 'ClinicManagement'
+        package: '$(Pipeline.Workspace)/drop/**/*.zip'
