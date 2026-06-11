@@ -8,51 +8,42 @@ variables:
   BuildConfiguration: 'Release'
 
 stages:
-
 # ==========================
 # BUILD STAGE
 # ==========================
 - stage: Build
   displayName: 'Build Application'
-
   jobs:
   - job: BuildJob
     displayName: 'Build ASP.NET Core API'
-
     steps:
-
     - task: UseDotNet@2
       displayName: 'Install .NET 9 SDK'
       inputs:
         packageType: 'sdk'
         version: '9.0.x'
-
     - task: DotNetCoreCLI@2
       displayName: 'Restore Packages'
       inputs:
         command: 'restore'
         projects: '**/*.csproj'
-
     - task: DotNetCoreCLI@2
       displayName: 'Build Project'
       inputs:
         command: 'build'
         projects: '**/*.csproj'
         arguments: '--configuration $(BuildConfiguration)'
-
     - task: DotNetCoreCLI@2
       displayName: 'Publish Project'
       inputs:
         command: 'publish'
         publishWebProjects: true
         arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-
     - task: PublishPipelineArtifact@1
       displayName: 'Publish Artifact'
       inputs:
         targetPath: '$(Build.ArtifactStagingDirectory)'
         artifact: 'drop'
-
 # ==========================
 # DEPLOY STAGE
 # ==========================
@@ -60,20 +51,16 @@ stages:
   displayName: 'Deploy to Azure'
   dependsOn: Build
   condition: succeeded()
-
   jobs:
   - job: DeployWeb
     displayName: 'Deploy to App Service'
-
     steps:
-
     - download: current
       artifact: drop
-
     - task: AzureWebApp@1
       displayName: 'Deploy to Azure App Service'
       inputs:
-        azureSubscription: 'ClinicManagement'
-        appType: 'webApp'
-        appName: 'ClinicManagement'
+        azureSubscription: 'ClinicManagement-Connection'   # <-- service connection name (Step 3)
+        appType: 'webApp'                                   # <-- 'webApp' = Windows. Use 'webAppLinux' if your App Service is Linux
+        appName: 'clinic-rg'                                # <-- the Name field from your Azure screenshot
         package: '$(Pipeline.Workspace)/drop/**/*.zip'
